@@ -25,10 +25,16 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Update_Status_to_Open_NC</name>
-        <label>Update Status to Open - NC</label>
+        <name>Update_Status_Lead_Source</name>
+        <label>Update Status &amp; Lead Source</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <inputAssignments>
+            <field>LeadSource</field>
+            <value>
+                <stringValue>Web</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -41,7 +47,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_Status_to_Open_NC</targetReference>
+            <targetReference>Update_Status_Lead_Source</targetReference>
         </connector>
         <object>Lead</object>
         <recordTriggerType>Create</recordTriggerType>
