@@ -2,6 +2,42 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <constants>
+        <name>DefaultAmount</name>
+        <dataType>Currency</dataType>
+        <value>
+            <numberValue>10000.0</numberValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Is_Amount_empty</name>
+        <label>Is Amount empty?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_it_is_empty</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Amount</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Amount</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Amount_to_10K</targetReference>
+            </connector>
+            <label>Yes,it is empty</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Opportunity - Before - Update Default Stage {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity - Before - Update Default Stage</label>
@@ -25,10 +61,26 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
+        <name>Update_Amount_to_10K</name>
+        <label>Update Amount to 10K</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Amount</field>
+            <value>
+                <elementReference>DefaultAmount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Stage_to_Prospecting</name>
         <label>Update Stage to Prospecting</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Amount_empty</targetReference>
+        </connector>
         <inputAssignments>
             <field>StageName</field>
             <value>
